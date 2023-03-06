@@ -11,10 +11,14 @@ export default async function handler(req, res) {
       prompt: req.body.prompt,
       temperature: 0,
       max_tokens: 1000
+    }).then(data => {
+      if (data) {
+        res.status(200).json({ text: data.data.choices[0].text })
+      } else {
+        res.status(200).json({ text: "Invalid prompt provided." })
+      }
+    }).catch(err => {
+      res.status(200).json({ text: err.message })
     })
-
-    res.status(200).json({ text: response.data.choices[0].text })
-  } else {
-    res.status(200).json({ text: "Invalid prompt provided." })
   }
 }
